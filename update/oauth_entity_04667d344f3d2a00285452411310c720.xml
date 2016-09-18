@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="oauth_entity">
+    <oauth_entity action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <access_token_lifespan>1800</access_token_lifespan>
+        <active>true</active>
+        <auth_code_lifespan>0</auth_code_lifespan>
+        <auth_url/>
+        <certificate_url/>
+        <client_id>aTwjfmUY9CWcfEYcgO3zMjAAqA9D6nOA</client_id>
+        <client_secret>gfCh0lfG/0vXS9WMExdDZHsxpJr4TKMY</client_secret>
+        <client_uuid>80667d344f3d2a00285452411310c720</client_uuid>
+        <comments/>
+        <default_grant_type>client_credentials</default_grant_type>
+        <id_token_lifespan>0</id_token_lifespan>
+        <logo_url/>
+        <message_signature_lifespan>0</message_signature_lifespan>
+        <name>Telstra OAuth for SMS</name>
+        <oauth_api_script/>
+        <redirect_url>https://qssdev4.service-now.com/oauth_redirect.do</redirect_url>
+        <refresh_token_lifespan>8640000</refresh_token_lifespan>
+        <revoke_token_url/>
+        <salt>0</salt>
+        <sys_class_name>oauth_entity</sys_class_name>
+        <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+        <sys_created_on>2016-09-09 02:15:51</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>04667d344f3d2a00285452411310c720</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>aTwjfmUY9CWcfEYcgO3zMjAAqA9D6nOA</sys_name>
+        <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
+        <sys_update_name>oauth_entity_04667d344f3d2a00285452411310c720</sys_update_name>
+        <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+        <sys_updated_on>2016-09-09 02:28:33</sys_updated_on>
+        <token_url>https://api.telstra.com/v1/oauth/token</token_url>
+        <type>oauth_provider</type>
+        <user/>
+    </oauth_entity>
+</record_update>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_label/>
+        <action_name/>
+        <action_query>false</action_query>
+        <action_run_at>server</action_run_at>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <application/>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>incident</collection>
+        <condition>current.u_affected_contact.mobile_phone !=''</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message><![CDATA[<p>SMS Sent</p>]]></message>
+        <name>Send SMS</name>
+        <onclick/>
+        <order>100</order>
+        <priority>100</priority>
+        <read_access_action>false</read_access_action>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	//Sort journal entries for this sysID that occured in the last minute in descending order (only take the latest entry on each run)
+	//Only send an SMS if this latest entry is a comment (not a work notes)
+	var latestComment = new GlideRecord('sys_journal_field');
+	latestComment.addEncodedQuery('element_id=' + current.getValue('sys_id') + '^sys_created_on>javascript:gs.minutesAgoStart(1)');
+	latestComment.orderByDesc('sys_created_on');
+	latestComment.query();
+	latestComment.next();
+	
+	var customerVisible = latestComment.getValue('value');
+	var mobile = current.u_affected_contact.mobile_phone;//current.caller_id.mobile_phone != ''
+	var sysID = current.getValue('sys_id');
+	var incident = current.getValue('number');
+	
+	
+	var commentType = latestComment.getValue('element');//&& latestComment.getValue('element')=='comments'
+	
+	if (customerVisible.substr(0,4)=='sms:'  && commentType=='comments'){ //only send if there's a customer facing comment and it's flagged as sms:
+		customerVisible = customerVisible.substr(4,customerVisible.length); //Take the "sms:" off the message
+		mobile = mobile.replace('(',''); //remove extraneous characters from mobile numbers or Telstra will reject the SMS
+		mobile = mobile.replace(')','');
+		mobile = mobile.replace('-','');
+		mobile = mobile.replace(' ','');
+		mobile = mobile.replace('+61','0');
+		gs.info('JDS: ' + mobile + ' '+ customerVisible );
+		//Messages can only be 159 characters long. Start with an explaination...
+		var message = 'Update on Incident '+ incident +': ' + customerVisible;
+		//If the message is too long, trim it and refer the customer to the online portal
+		if ( message.length >= 132) {message = message.substring(0, 126) + '...(see more detail online)';}
+
+		//Send the message
+		try {
+			var r = new sn_ws.RESTMessageV2('x_qwog6_jds_sms.Telstra_Send_SMS', 'post');
+			r.setStringParameterNoEscape('body', message );
+			r.setStringParameter('to', mobile );
+
+			var response = r.execute();
+			var responseBody = response.getBody();
+			var httpStatus = response.getStatusCode(); //202 is Accepted for processing subject to conformity, no guarantee of delivery
+
+			var messageResponse = JSON.parse(responseBody );
+
+			var SMS = new GlideRecord('x_qwog6_jds_sms_sms_messages');
+			SMS.query();
+			SMS.next();
+
+			SMS.setValue('messageid',messageResponse.messageId);
+			SMS.setValue('content',message);
+			SMS.setValue('mobile',mobile);
+			//SMS.setValue('reference_type','incident'); //identify the table from which this message originated
+			SMS.setValue('incident_reference',sysID); //provide the reference so replies can be linked
+			SMS.setValue('status',httpStatus);
+			SMS.setValue('direction','Sent to customer' );
+
+			SMS.insert();
+		}
+		catch(ex) {
+			//var message = ex.getMessage();
+			gs.addInfoMessage('JDS: An error occured while sending the SMS ' + mobile + ' '+ customerVisible  );
+		}
+	
+}
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+        <sys_created_on>2016-09-08 05:12:52</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_domain>global</sys_domain>
+        <sys_id>f48319e84f752a00285452411310c780</sys_id>
+        <sys_mod_count>28</sys_mod_count>
+        <sys_name>Send SMS</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
+        <sys_update_name>sys_script_f48319e84f752a00285452411310c780</sys_update_name>
+        <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+        <sys_updated_on>2016-09-16 05:23:17</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+</record_update>

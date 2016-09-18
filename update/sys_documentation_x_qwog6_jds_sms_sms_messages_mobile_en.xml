@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="mobile" label="Mobile Number" language="en" table="x_qwog6_jds_sms_sms_messages">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>mobile</element>
+            <help/>
+            <hint/>
+            <label>Mobile Number</label>
+            <language>en</language>
+            <name>x_qwog6_jds_sms_sms_messages</name>
+            <plural>Mobile Numbers</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+            <sys_created_on>2016-09-08 04:08:05</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_id>3ce645e44f752a00285452411310c7bc</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Mobile Number</sys_name>
+            <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
+            <sys_update_name>sys_documentation_x_qwog6_jds_sms_sms_messages_mobile_en</sys_update_name>
+            <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+            <sys_updated_on>2016-09-08 04:08:05</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

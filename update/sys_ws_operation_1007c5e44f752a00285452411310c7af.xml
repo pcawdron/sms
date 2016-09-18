@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>POST</http_method>
+        <name>insert</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+  var requestHeader = request.headers;
+  var requestOrigin = requestHeader['x-forwarded-for'];
+  var requestBody = request.body;
+  var requestData = requestBody.data;
+	
+  //Only accept incoming SMS from Telstra
+  if (requestOrigin.substr(0,10) == '203.35.167') {// 203.35.167.2/3 = dev.telstra.com
+	                                
+	try {
+		
+		var gr = new GlideRecord('x_qwog6_jds_sms_sms_messages');
+		var incidentRecord = '';
+		gr.initialize();
+		var q = (requestHeader['x-forwarded-for'] == '203.35.167.2');
+		
+		gr.content               = requestData['content'];
+		gr.status                = requestData['status'];
+		gr.messageid             = requestData['messageId'];
+        gr.acknowledgedtimestamp = requestData['acknowledgedTimestamp'];
+		gr.mobile                = requestData['from'];
+		
+		//Look for the incident this message relates to
+		var previousSMS = new GlideRecord('x_qwog6_jds_sms_sms_messages');
+		previousSMS.addEncodedQuery("messageid=" + requestData['messageId'] + "^incident_referenceISNOTEMPTY");
+		previousSMS.query();         
+		if(previousSMS.hasNext()){
+			previousSMS.next();
+			incidentRecord = previousSMS.getValue('incident_reference');
+			gr.incident_reference=incidentRecord;
+		}
+		reqSysID = gr.insert();//insert a record into the SMS table logging this incoming message
+		
+		//update incident details 		
+		var SMSrequest = new sn_ws.RESTMessageV2();
+		SMSrequest.setEndpoint('https://qssdev4.service-now.com/api/now/table/incident/'+incidentRecord+'?sysparm_display_value=true&sysparm_input_display_value=true');
+		SMSrequest.setHttpMethod('PUT');
+
+		//Eg. UserName="admin", Password="admin" for this code sample.
+		var user = gs.getProperty('x_qwog6_jds_sms.sms.response.username');
+		var password = gs.getProperty('x_qwog6_jds_sms.sms.response.userpassword');
+
+		SMSrequest.setBasicAuth(user,password);
+		SMSrequest.setRequestHeader("Accept","application/json");
+		SMSrequest.setRequestHeader('Content-Type','application/json');
+		SMSrequest.setRequestBody("{\"work_notes\":\"SMS Customer Response: " + requestData['content'] +"\"}");
+		var SMSresponse = SMSrequest.execute();
+				
+		if (reqSysID == null) {
+			recNumber = '';
+			message = '';
+			statusCode = 500;
+		}
+		else {
+			recNumber = reqSysID; 
+			message = 'success';
+			statusCode = 200;
+		}
+
+		response.setContentType('application/json');
+		response.setBody({
+			number: recNumber,
+			message: message,
+		});
+		response.setStatus(statusCode);
+		
+	}
+	catch (ex) {
+		var message = ex.message;
+		gs.info('JDS an error occurred');
+		gs.info(message);
+		response.setContentType('application/json');
+		response.setBody({
+			number: '',
+			message: message,
+		});
+		response.setStatus(520);
+	}	
+  }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_qwog6_jds_sms/sms_response</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/</relative_path>
+        <request_example/>
+        <requires_acl_authorization>false</requires_acl_authorization>
+        <requires_authentication>false</requires_authentication>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+        <sys_created_on>2016-09-08 04:10:39</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>1007c5e44f752a00285452411310c7af</sys_id>
+        <sys_mod_count>68</sys_mod_count>
+        <sys_name>insert</sys_name>
+        <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
+        <sys_update_name>sys_ws_operation_1007c5e44f752a00285452411310c7af</sys_update_name>
+        <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+        <sys_updated_on>2016-09-18 22:50:41</sys_updated_on>
+        <web_service_definition display_value="SMS Response">38f6c5e44f752a00285452411310c715</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

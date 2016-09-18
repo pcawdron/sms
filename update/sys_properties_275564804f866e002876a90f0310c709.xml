@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>This is the user that adds SMS responses to the internal worknotes</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_qwog6_jds_sms.sms.response.username</name>
+        <read_roles/>
+        <suffix>sms.response.username</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+        <sys_created_on>2016-09-18 22:42:27</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>275564804f866e002876a90f0310c709</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>x_qwog6_jds_sms.sms.response.username</sys_name>
+        <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
+        <sys_update_name>sys_properties_275564804f866e002876a90f0310c709</sys_update_name>
+        <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+        <sys_updated_on>2016-09-18 22:46:10</sys_updated_on>
+        <type>string</type>
+        <value>sms.response</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=275564804f866e002876a90f0310c709"/>
+</record_update>

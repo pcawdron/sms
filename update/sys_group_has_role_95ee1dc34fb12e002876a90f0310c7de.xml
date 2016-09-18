@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_group_has_role">
+    <sys_group_has_role action="INSERT_OR_UPDATE">
+        <granted_by/>
+        <group display_value="Telstra REST web service" name="Telstra REST web service">bdce51474fb12e002876a90f0310c736</group>
+        <inherits>true</inherits>
+        <role display_value="rest_service" name="rest_service">3dfd67229f22110041a496fcc67fcf6c</role>
+        <sys_class_name>sys_group_has_role</sys_class_name>
+        <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+        <sys_created_on>2016-09-16 00:17:48</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>95ee1dc34fb12e002876a90f0310c7de</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Telstra REST web service.rest_service</sys_name>
+        <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
+        <sys_update_name>sys_group_has_role_95ee1dc34fb12e002876a90f0310c7de</sys_update_name>
+        <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+        <sys_updated_on>2016-09-16 00:17:48</sys_updated_on>
+    </sys_group_has_role>
+</record_update>
