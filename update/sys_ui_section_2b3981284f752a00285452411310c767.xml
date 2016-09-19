@@ -155,6 +155,34 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>reference</element>
+            <position>11</position>
+            <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+            <sys_created_on>2016-09-19 05:48:51</sys_created_on>
+            <sys_id>ff674a8c4f4a6e002876a90f0310c778</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_qwog6_jds_sms_sms_messages" sys_domain="global" view="Default view">2b3981284f752a00285452411310c767</sys_ui_section>
+            <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+            <sys_updated_on>2016-09-19 05:48:51</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>reference_type</element>
+            <position>12</position>
+            <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
+            <sys_created_on>2016-09-19 05:48:51</sys_created_on>
+            <sys_id>cc774a8c4f4a6e002876a90f0310c77a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_qwog6_jds_sms_sms_messages" sys_domain="global" view="Default view">2b3981284f752a00285452411310c767</sys_ui_section>
+            <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
+            <sys_updated_on>2016-09-19 05:48:51</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

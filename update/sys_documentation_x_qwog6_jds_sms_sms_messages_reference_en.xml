@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update>
-    <sys_documentation element="incident_reference" label="Incident Reference" language="en" table="x_qwog6_jds_sms_sms_messages">
+    <sys_documentation element="reference" label="Reference" language="en" table="x_qwog6_jds_sms_sms_messages">
         <sys_documentation action="INSERT_OR_UPDATE">
-            <element>incident_reference</element>
+            <element>reference</element>
             <help/>
             <hint/>
-            <label>Incident Reference</label>
+            <label>Reference</label>
             <language>en</language>
             <name>x_qwog6_jds_sms_sms_messages</name>
-            <plural>Incident References</plural>
+            <plural>References</plural>
             <sys_class_name>sys_documentation</sys_class_name>
             <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
-            <sys_created_on>2016-09-08 04:08:05</sys_created_on>
+            <sys_created_on>2016-09-19 05:48:51</sys_created_on>
             <sys_customer_update>false</sys_customer_update>
-            <sys_id>b8e645e44f752a00285452411310c7bb</sys_id>
+            <sys_id>c4774a8c4f4a6e002876a90f0310c77b</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_name>Incident Reference</sys_name>
+            <sys_name>Reference</sys_name>
             <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
             <sys_policy/>
             <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
             <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
-            <sys_update_name>sys_documentation_x_qwog6_jds_sms_sms_messages_incident_reference_en</sys_update_name>
+            <sys_update_name>sys_documentation_x_qwog6_jds_sms_sms_messages_reference_en</sys_update_name>
             <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
-            <sys_updated_on>2016-09-08 04:08:05</sys_updated_on>
+            <sys_updated_on>2016-09-19 05:48:51</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>

@@ -4,12 +4,10 @@
         <element label="Acknowledged Time Stamp" max_length="40" name="acknowledgedtimestamp" type="string"/>
         <element label="Content" max_length="160" name="content" type="string"/>
         <element default="Received from customer" label="Direction" max_length="40" name="direction" type="string"/>
-        <element label="Incident Reference" max_length="32" name="incident_reference" reference="incident" type="reference"/>
         <element label="MessageID" max_length="40" name="messageid" type="string"/>
         <element label="Mobile Number" max_length="40" name="mobile" type="string"/>
+        <element label="Reference" max_length="40" name="reference" type="string"/>
+        <element label="Reference Type" max_length="40" name="reference_type" type="string"/>
         <element label="Status" max_length="40" name="status" type="string"/>
-        <index name="index">
-            <element name="incident_reference"/>
-        </index>
     </element>
 </database>

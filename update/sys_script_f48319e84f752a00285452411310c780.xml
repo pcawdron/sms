@@ -51,7 +51,7 @@
 	
 	var commentType = latestComment.getValue('element');//&& latestComment.getValue('element')=='comments'
 	
-	if (customerVisible.substr(0,4)=='sms:'  && commentType=='comments'){ //only send if there's a customer facing comment and it's flagged as sms:
+	if (customerVisible.substr(0,4).toLowerCase()=='sms:'  && commentType=='comments'){ //only send if there's a customer facing comment and it's flagged as sms:
 		customerVisible = customerVisible.substr(4,customerVisible.length); //Take the "sms:" off the message
 		customerVisible = customerVisible.replace('"',''); //remove any illegal characters such as " or '
 		customerVisible = customerVisible.replace("'re"," are");
@@ -63,6 +63,7 @@
 		mobile = mobile.replace(')','');
 		mobile = mobile.replace('-','');
 		mobile = mobile.replace(' ','');
+		//mobile = mobile.replace('/\D/g',''); //regex doesn't work in ServiceNow rhino js
 		mobile = mobile.replace('+61','0');
 		 
 		//Messages can only be 159 characters long. Start with an explaination...
@@ -87,8 +88,8 @@
 			SMS.setValue('messageid',messageResponse.messageId);
 			SMS.setValue('content', message);
 			SMS.setValue('mobile',mobile);
-			//SMS.setValue('reference_type','incident'); //identify the table from which this message originated
-			SMS.setValue('incident_reference',sysID); //provide the reference so replies can be linked
+			SMS.setValue('reference_type','incident'); //identify the table from which this message originated
+			SMS.setValue('reference',sysID); //provide the reference so replies can be linked
 			SMS.setValue('status',httpStatus);
 			SMS.setValue('direction','Sent to customer' );
 
@@ -103,7 +104,6 @@
 		}
 		catch(ex) {
 			//an error has occured in the script itself
-			gs.addInfoMessage('JDS: An error occured while sending the SMS ' + mobile + ' '+ customerVisible  );
 			current.work_notes='WARNING: Script error occurred while sending an SMS to ' + mobile ;
 			current.update();
 		}
@@ -116,7 +116,7 @@
         <sys_customer_update>true</sys_customer_update>
         <sys_domain>global</sys_domain>
         <sys_id>f48319e84f752a00285452411310c780</sys_id>
-        <sys_mod_count>34</sys_mod_count>
+        <sys_mod_count>38</sys_mod_count>
         <sys_name>Send SMS</sys_name>
         <sys_overrides/>
         <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
@@ -125,7 +125,7 @@
         <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
         <sys_update_name>sys_script_f48319e84f752a00285452411310c780</sys_update_name>
         <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
-        <sys_updated_on>2016-09-19 01:11:10</sys_updated_on>
+        <sys_updated_on>2016-09-19 06:20:02</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>
