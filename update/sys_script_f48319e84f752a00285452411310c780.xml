@@ -17,7 +17,7 @@
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
         <collection>incident</collection>
-        <condition>current.u_affected_contact.mobile_phone !=''</condition>
+        <condition>current.u_affected_contact.mobile_phone !='' &amp;&amp; gs.getUserDisplayName() != "System"</condition>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
@@ -49,11 +49,16 @@
 	var sysID = current.getValue('sys_id');
 	var incident = current.getValue('number');
 	
-	
 	var commentType = latestComment.getValue('element');//&& latestComment.getValue('element')=='comments'
 	
 	if (customerVisible.substr(0,4)=='sms:'  && commentType=='comments'){ //only send if there's a customer facing comment and it's flagged as sms:
 		customerVisible = customerVisible.substr(4,customerVisible.length); //Take the "sms:" off the message
+		customerVisible = customerVisible.replace('"',''); //remove any illegal characters such as " or '
+		customerVisible = customerVisible.replace("'re"," are");
+		customerVisible = customerVisible.replace("don't","do not");
+		customerVisible = customerVisible.replace("'re"," are");
+		customerVisible = customerVisible.replace("'ve"," have");
+		customerVisible = customerVisible.replace("'","");
 		mobile = mobile.replace('(',''); //remove extraneous characters from mobile numbers or Telstra will reject the SMS
 		mobile = mobile.replace(')','');
 		mobile = mobile.replace('-','');
@@ -82,7 +87,7 @@
 			SMS.next();
 
 			SMS.setValue('messageid',messageResponse.messageId);
-			SMS.setValue('content',message);
+			SMS.setValue('content', message);
 			SMS.setValue('mobile',mobile);
 			//SMS.setValue('reference_type','incident'); //identify the table from which this message originated
 			SMS.setValue('incident_reference',sysID); //provide the reference so replies can be linked
@@ -104,7 +109,7 @@
         <sys_customer_update>true</sys_customer_update>
         <sys_domain>global</sys_domain>
         <sys_id>f48319e84f752a00285452411310c780</sys_id>
-        <sys_mod_count>28</sys_mod_count>
+        <sys_mod_count>31</sys_mod_count>
         <sys_name>Send SMS</sys_name>
         <sys_overrides/>
         <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
@@ -113,7 +118,7 @@
         <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
         <sys_update_name>sys_script_f48319e84f752a00285452411310c780</sys_update_name>
         <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
-        <sys_updated_on>2016-09-16 05:23:17</sys_updated_on>
+        <sys_updated_on>2016-09-19 00:18:07</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

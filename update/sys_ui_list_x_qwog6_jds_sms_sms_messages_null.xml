@@ -103,10 +103,10 @@
             <sum>false</sum>
             <sys_class_name>sys_ui_list</sys_class_name>
             <sys_created_by>peter.cawdron@jds.net.au</sys_created_by>
-            <sys_created_on>2016-09-08 04:16:53</sys_created_on>
+            <sys_created_on>2016-09-19 00:06:57</sys_created_on>
             <sys_customer_update>true</sys_customer_update>
             <sys_domain>global</sys_domain>
-            <sys_id>e9e841284f752a00285452411310c7ea</sys_id>
+            <sys_id>f3293c884f866e002876a90f0310c7c2</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>x_qwog6_jds_sms_sms_messages</sys_name>
             <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
@@ -115,8 +115,8 @@
             <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
             <sys_update_name>sys_ui_list_x_qwog6_jds_sms_sms_messages_null</sys_update_name>
             <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
-            <sys_updated_on>2016-09-08 04:16:53</sys_updated_on>
-            <sys_user/>
+            <sys_updated_on>2016-09-19 00:06:57</sys_updated_on>
+            <sys_user display_value="Peter Cawdron (JDS)">071b06bf4f65e600285452411310c7f9</sys_user>
             <view display_value="Default view" name="NULL">Default view</view>
             <view_name/>
         </sys_ui_list>
