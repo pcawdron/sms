@@ -17,7 +17,7 @@
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
         <collection>incident</collection>
-        <condition>current.u_affected_contact.mobile_phone !='' &amp;&amp; gs.getUserDisplayName() != "System"</condition>
+        <condition>gs.getUserDisplayName() != "System"</condition>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
@@ -35,8 +35,10 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	//Ignore business rule if the user is system, as system can fire multiple times when creating the initial record
 	
-	//Sort journal entries for this sysID that occured in the last minute in descending order (only take the latest entry on each run)
+	//It's not possible to use current.comments from an asyncronous business rule, so we need to retrieve the entry from sys_journal
+	//Sort journal entries for this sysID in the last minute in descending order (only take the latest entry on each run)
 	//Only send an SMS if this latest entry is a comment (not a work notes)
 	var latestComment = new GlideRecord('sys_journal_field');
 	latestComment.addEncodedQuery('element_id=' + current.getValue('sys_id') + '^sys_created_on>javascript:gs.minutesAgoStart(1)');
@@ -44,8 +46,9 @@
 	latestComment.query();
 	latestComment.next();
 	
-	var customerVisible = latestComment.getValue('value');
+	var customerVisible = latestComment.getValue('value');  
 	var mobile = current.u_affected_contact.mobile_phone;//current.caller_id.mobile_phone != ''
+	if (mobile == null){mobile = '';}//If the mobile field is null, set it to an empty string but don't err yet as may not be trying to send an SMS
 	var sysID = current.getValue('sys_id');
 	var incident = current.getValue('number');
 	
@@ -59,19 +62,28 @@
 		customerVisible = customerVisible.replace("'re"," are");
 		customerVisible = customerVisible.replace("'ve"," have");
 		customerVisible = customerVisible.replace("'","");
-		mobile = mobile.replace('(',''); //remove extraneous characters from mobile numbers or Telstra will reject the SMS
-		mobile = mobile.replace(')','');
-		mobile = mobile.replace('-','');
-		mobile = mobile.replace(' ','');
-		//mobile = mobile.replace('/\D/g',''); //regex doesn't work in ServiceNow rhino js
-		mobile = mobile.replace('+61','0');
+		mobile = mobile.replace('+61','0');//make sure the mobile number will be accepted by Telstra by replacing +61 wit 0
+		mobile = mobile.replace(/\D/g,'');// remove any no digit characters so (04) 1224 7885 (Work) becomes 0412247885 
+		mobile = mobile.substr(0,10);//make sure the length of the mobile number is limited to 10 characters
+		
+		if (mobile =='')
+		{ //someone tried to send an SMS without a mobile number so quit at this point and note that there was a problem
+			var reportError = new GlideRecord('incident');
+			reportError.addQuery('sys_id', sysID);
+			reportError.query();
+			if(reportError.next()){
+				reportError.work_notes.setJournalEntry('WARNING! SMS failed as the user does not have a mobile number');   
+				reportError.update();
+			}
+			return;
+		}
 		 
 		//Messages can only be 159 characters long. Start with an explaination...
 		var message = 'Update on Incident '+ incident +': ' + customerVisible;
 		//If the message is too long, trim it and refer the customer to the online portal
-		if ( message.length >= 132) {message = message.substring(0, 132) + '...(see more detail online)';}
+		if ( message.length >= 136) {message = message.substring(0, 136) + '...(more detail online)';} //136 + '...(more detail online)' = 159
 
-		//Send the message
+		//Send the message using an outbound REST post defined in ServiceNow
 		try {
 			var r = new sn_ws.RESTMessageV2('x_qwog6_jds_sms.Telstra_Send_SMS', 'post');
 			r.setStringParameterNoEscape('body', message );
@@ -82,7 +94,8 @@
 			var httpStatus = response.getStatusCode(); //202 is Accepted for processing subject to conformity, no guarantee of delivery
 
 			var messageResponse = JSON.parse(responseBody );
-
+			
+			//Add a record of the interaction, including the response from Telstra
 			var SMS = new GlideRecord('x_qwog6_jds_sms_sms_messages');
 			SMS.initialize();
 			SMS.setValue('messageid',messageResponse.messageId);
@@ -92,19 +105,18 @@
 			SMS.setValue('reference',sysID); //provide the reference so replies can be linked
 			SMS.setValue('status',httpStatus);
 			SMS.setValue('direction','Sent to customer' );
-
 			SMS.insert();
 			
 			if (httpStatus!='202'){
 				//An error has occured on the Telstra network
-				current.work_notes='WARNING: Error ' + httpStatus + ' occurred while sending an SMS to ' + mobile ;
+				current.work_notes='WARNING: Telstra reported an error ' + httpStatus + ' while sending an SMS to ' + mobile ;
 				current.update();
 			}
 			
 		}
 		catch(ex) {
 			//an error has occured in the script itself
-			current.work_notes='WARNING: Script error occurred while sending an SMS to ' + mobile ;
+			current.work_notes='WARNING: Script error has been caught while sending an SMS to ' + mobile ;
 			current.update();
 		}
 	
@@ -116,7 +128,7 @@
         <sys_customer_update>true</sys_customer_update>
         <sys_domain>global</sys_domain>
         <sys_id>f48319e84f752a00285452411310c780</sys_id>
-        <sys_mod_count>38</sys_mod_count>
+        <sys_mod_count>60</sys_mod_count>
         <sys_name>Send SMS</sys_name>
         <sys_overrides/>
         <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
@@ -125,7 +137,7 @@
         <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
         <sys_update_name>sys_script_f48319e84f752a00285452411310c780</sys_update_name>
         <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
-        <sys_updated_on>2016-09-19 06:20:02</sys_updated_on>
+        <sys_updated_on>2016-09-20 00:05:09</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>
