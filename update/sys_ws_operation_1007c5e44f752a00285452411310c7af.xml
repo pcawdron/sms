@@ -51,9 +51,9 @@
 		SMSrequest.setBasicAuth(user,password);
 		SMSrequest.setRequestHeader("Accept","application/json");
 		SMSrequest.setRequestHeader('Content-Type','application/json');
-		SMSrequest.setRequestBody("{\"work_notes\":\"SMS Customer Response: " + requestData['content'] +"\"}");
+		SMSrequest.setRequestBody("{\"work_notes\":\"SMS Customer Response: " + requestData['content'] +"\",\"u_updated_by_customer\":\"true\"}");
 		var SMSresponse = SMSrequest.execute();
-				
+				//
 		if (reqSysID == null) {
 			recNumber = '';
 			message = '';
@@ -99,7 +99,7 @@
         <sys_created_on>2016-09-08 04:10:39</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>1007c5e44f752a00285452411310c7af</sys_id>
-        <sys_mod_count>70</sys_mod_count>
+        <sys_mod_count>71</sys_mod_count>
         <sys_name>insert</sys_name>
         <sys_package display_value="JDS SMS" source="x_qwog6_jds_sms">12e5cda44f752a00285452411310c75a</sys_package>
         <sys_policy/>
@@ -107,7 +107,7 @@
         <sys_scope display_value="JDS SMS">12e5cda44f752a00285452411310c75a</sys_scope>
         <sys_update_name>sys_ws_operation_1007c5e44f752a00285452411310c7af</sys_update_name>
         <sys_updated_by>peter.cawdron@jds.net.au</sys_updated_by>
-        <sys_updated_on>2016-09-19 05:58:25</sys_updated_on>
+        <sys_updated_on>2016-09-21 06:57:58</sys_updated_on>
         <web_service_definition display_value="SMS Response">38f6c5e44f752a00285452411310c715</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
